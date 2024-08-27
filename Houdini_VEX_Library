@@ -1,0 +1,19 @@
+//multiplying vector value 
+
+v@v *= chf("vel_mult");
+
+//make particles disappear as the time passes including the alpha value
+
+@pscale = chf("ParticleScale") * (1 - @nage); // scale
+@Cd = set(1, 1, 1) * (1 - @nage); // alpha
+@Alpha = 1 - @nage; // alpha
+
+// remove points based on the parameter range
+
+if (@pscale < chf("minVal")) removepoint(0,@ptnum);
+if (@pscale > chf("maxVal")) removepoint(0,@ptnum);
+
+//Particle scale decaes as the time moves
+
+@pscale = clamp(chf("ParticleScale") * (1 - @nage), 0, 1); // scale
+@Cd = set(1, 1, 1) * (1 - @nage); // alpha
