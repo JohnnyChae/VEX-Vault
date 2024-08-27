@@ -17,3 +17,23 @@ if (@pscale > chf("maxVal")) removepoint(0,@ptnum);
 
 @pscale = clamp(chf("ParticleScale") * (1 - @nage), 0, 1); // scale
 @Cd = set(1, 1, 1) * (1 - @nage); // alpha
+
+//frustum culling which allows to remove all points that is not in the area where the camera can see
+
+string camera = chs("../camera");
+vector campos = toNDC(camera, @P);
+
+vector2 padding = chu("../padding");
+
+if ((campos.x + padding.x) <0 || (campos.x - padding.x) >1 || (campos.y + padding.y) <0 || (campos.y - padding.y))
+    i@group_kill = 1;
+
+matrix cam = optransform(camera);
+
+vector camera_position = cracktransform(0, 0, 0, {0, 0, 0}, cam);
+
+float distance = distance(camera_position, @P);
+
+float threshold = ch("../distance");
+if(distance > threshold)
+    i@group_kill = 1;
